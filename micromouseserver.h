@@ -53,7 +53,11 @@ private:
     void turnRight();
     void foundFinish();
     void printUI(const char *mesg);
-    
+    void coordLeft();
+    void coordRight();
+    void coordForward();
+    bool checkStack(int x1, int y1);
+
     QTimer *_comTimer;
     QTimer *_aiCallTimer;
     static const int _mDelay = 100;
@@ -64,6 +68,12 @@ private:
     void connectSignals();
     void initMaze();
     Stack *turnStack = nullptr;
+    int state = 0;
+    int x = 0;
+    int y = 0;
+    int dir = 0;
+    int l = 0;
+    int r = 0;
 };
 
 #endif // MICROMOUSESERVER_H
