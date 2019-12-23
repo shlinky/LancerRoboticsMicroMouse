@@ -11,7 +11,6 @@ public:
 	int getX(int index = -1);
 	int getY(int index = -1);
 	int getLength();
-	void printStack(void);
 private:
 	int get(int index, int part);
 	int* stackPtr;

@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 
+//used to turn left while also updating the coordinates
 void microMouseServer::coordLeft()
 {
     if (dir == 0) {
@@ -14,6 +15,8 @@ void microMouseServer::coordLeft()
     }
     turnLeft();
 }
+
+//used to turn right while also updating the coordinates
 void microMouseServer::coordRight()
 {
     if (dir == 3) {
@@ -24,6 +27,8 @@ void microMouseServer::coordRight()
     }
     turnRight();
 }
+
+//used to move forward while also updating the coordinates
 void microMouseServer::coordForward()
 {
     moveForward();
@@ -41,6 +46,8 @@ void microMouseServer::coordForward()
     }
 }
 
+//used to check if mouse has already been to this coordinate
+//used to avoid loops and check for completion
 bool microMouseServer::checkStack(int x1, int y1)
 {
     int l = turnStack->getLength();
@@ -58,28 +65,13 @@ void microMouseServer::studentAI()
 {
     using namespace std::this_thread; // sleep_for, sleep_until
     using namespace std::chrono; // nanoseconds, system_clock, seconds
-/*
- * The following are the eight functions that you can call. Feel free to create your own fuctions as well.
- * Remember that any solution that calls moveForward more than once per call of studentAI() will have points deducted.
- *
- *The following functions return if there is a wall in their respective directions
- *bool isWallLeft();
- *bool isWallRight();
- *bool isWallForward();
- *
- *The following functions move the mouse. Move forward returns if the mouse was able to move forward and can be used for error checking
- *bool moveForward();
- *void turnLeft();
- *void turnRight();
- *
- * The following functions are called when you need to output something to the UI or when you have finished the maze
- * void foundFinish();
- * void printUI(const char *mesg);
-*/
+
+    //initializing stack
     if (turnStack == nullptr) {
         turnStack = new Stack(1000);
     }
 
+    //when mouse is going forward
     if (state == 0) {
         if ((!isWallRight()) && (r == 0)) {
             turnStack->push(l, l + 1, x, y);
@@ -115,6 +107,7 @@ void microMouseServer::studentAI()
         r = 0;
         l = 0;
     }
+    //if mouse is retracing its steps
     else {
         if ((x != turnStack->getX()) || (y != turnStack->getY())) {
             coordForward();
@@ -132,15 +125,6 @@ void microMouseServer::studentAI()
             turnStack->pop();
             state = 0;
         }
-        char buff[100];
-        printUI(itoa(l, buff, 10));
-        printUI(itoa(r, buff, 10));
     }
-
-    char buff[100];
-    printUI(itoa(x, buff, 10));
-    printUI(itoa(y, buff, 10));
-    printUI(itoa(state, buff, 10));
-    printUI("_______");
     //sleep_until(system_clock::now() + seconds(2));
 }
